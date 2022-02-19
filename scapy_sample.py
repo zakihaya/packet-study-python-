@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from scapy.all import *
 
 # 参考
@@ -24,7 +25,16 @@ ans.show()
 print("==========")
 
 # 特定のIPアドレスのMACアドレスを得るためのARP要求を行う
-arp = Ether(dst="ff:ff:ff:ff:ff:ff") / ARP(pdst="192.168.50.174")
-# srp1 - レイヤ2でパケットを送信する、pが入っているメソッドはレイヤ2でパケットを扱う
-res = srp1(arp)
-res.show()
+# arp = Ether(dst="ff:ff:ff:ff:ff:ff") / ARP(pdst="192.168.50.174")
+# # srp1 - レイヤ2でパケットを送信する、pが入っているメソッドはレイヤ2でパケットを扱う
+# res = srp1(arp)
+# res.show()
+
+print("==========")
+
+# 名前解決
+answer = sr1(
+    IP(dst="8.8.8.8") / UDP() / DNS(qd=DNSQR(qname="www.google.com")), verbose=0
+)
+print(answer[DNS].summary())
+print(answer.summary())
