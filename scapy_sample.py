@@ -38,3 +38,18 @@ answer = sr1(
 )
 print(answer[DNS].summary())
 print(answer.summary())
+
+print("==========")
+
+# YouTubeと3 way handshake
+
+conf.verb = 0
+sport = random.randint(1024, 65535)
+seq = random.randint(0, 1000)
+ip = IP(dst="www.youtube.com")
+
+SYN = TCP(sport=sport, dport=443, flags="S", seq=seq)
+SYNACK = sr1(ip / SYN)
+ACK = TCP(sport=sport, dport=443, flags="A", seq=SYNACK.ack, ack=SYNACK.seq + 1)
+send(ip / ACK)
+print(SYNACK.summary())
